@@ -5,15 +5,36 @@
           name:"",
           mobile: "",
           postcode: "",
-          email: ""
+          email: "",
+          submitted: false
       };
     },
     methods: {
-      GetValidationMethod(value){
-        console.log(value)
+        resetInput() {
+        this.name = "";
+        this.mobile = "";
+        this.postcode = "";
+        this.email = "";
       },
-      SubmitForm(){
-        console.log(hello)
+      GetValidationMethod(value){
+
+        if(this.name && this.mobile && this.postcode && this.email){
+          console.log("Login function called")
+          } else {
+        }
+        console.log({ name: this.name, mobile: this.mobile, postcode: this.postcode, email: this.email });
+
+      },
+      SubmitForm(e){        
+            // if(){
+            //   console.log('submitted')
+            //   this.submitted = true;
+            //   this.resetInput();
+            // } else {
+            //   this.submitted = false;
+            //   e.preventDefault;
+            //   alert('Form has errors')
+            // }
       }
     }
 })

@@ -7,10 +7,15 @@ const TYPES = [
 
 const includes = types => type => types.includes(type);
 
-
   Vue.component('custom-input', {
     template: '#custom-input', 
     inheritAttrs: false,
+    data() {
+      return {
+        errors: false,
+        valid : false, 
+      };
+    },
     props: {
       label: {
         type: String,
@@ -32,62 +37,71 @@ const includes = types => type => types.includes(type);
         }
       },
     },
+
     model: {
-      prop: "value",
-      event: "update"
-    },
+        prop: "value",
+        event: "update"
+      },
     methods: {
+   //make it toggle class 'is-invalid'      
+        validName: function(name) {
+          var re = /^[a-zA-Z]{6,13}$/;
+          return re.test(name);
+        },
+        isNumeric: function (n) {
+          return !isNaN(parseFloat(n)) && isFinite(n);
+        },
+        validEmail : function(email) {
+          var re = /(.+)@(.+){2,}\.(.+){2,}/;
+          return re.test(email);
+        },
 
-   //make it toggle class 'is-invalid'
-        
-  Validation(value){
+        Validation(value){
+    
+          if( this.label === "Name" ){
+              if( this.validName(value)){
+              this.errors = false;
+              this.valid = true;
+              } else {
+                console.log('wrong-name')
+                this.errors = true;
+              }
+          }
 
-        //validation
-        if( this.label === "Name" ){
-            if( this.validName(value)){
-            return true;
-            }
-        }
+          if( this.label === "Mobile" ){
+              if( this.isNumeric(value)){
+                this.errors = false;
+                this.valid = true;
+                  }else {
+                    console.log('wrong-mobile')
+                    this.errors = true;
+                  }
+          }
 
-        if( this.label === "Mobile" ){
-            if( this.validNumber(value)){
-                // return true;
-                }
-        }
+          if( this.label === "Postcode" ){
+              if( this.isNumeric(value)){
+                    this.errors = false;
+                    this.valid = true;
+                  }else {
+                    console.log('wrong-postcode')
+                    this.errors = true;
+                  }
+          }
 
-        if( this.label === "Postcode" ){
-            if( this.validNumber(value)){
-                // return true;
-                }
-        }
+          if( this.label === "Email" ){
+              if( this.validEmail(value)){
+                this.errors = false;
+                this.valid = true;
+                  }else {
+                    console.log('wrong-email')
+                    this.errors = true;
+                  }
+          }
 
-        if( this.label === "Email" ){
-            if( this.validEmail(value)){
-                // return true;
-                }
-        }
-
-        this.$emit('GetValidation',value)
-    }
+          this.$emit('getvalidation',value)
     },
-    validName: function(name) {
-      var re = /^[a-zA-Z]{6,13}$/;
-      return re.test(name);
-  },
-    validNumber: function(number) {
-      var re = /^[0-9]*$/;
-      return re.test(number);
-  },
-    validEmail : function(email) {
-        var re = /(.+)@(.+){2,}\.(.+){2,}/;
-        return re.test(email);
-    },
-
-    resetInput() {
-        this.name = "";
-        this.mobile = "";
-        this.postcode = "";
-        this.email = "";
     }
-      
   })
+
+  
+
