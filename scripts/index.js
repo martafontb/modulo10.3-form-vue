@@ -2,39 +2,72 @@
     el: '#app',
       data() {
         return {
-          name:"",
+          name: "",
+          validName: false,
           mobile: "",
+          validMobile: false,
           postcode: "",
+          validPostcode: false,
           email: "",
-          submitted: false
-      };
-    },
+          validPostcode: false,
+          password:"",
+          validPassword:false,
+          confirmation:"",
+          validConfirmation:false,
+          submitted: false,
+          // validated: false
+    }
+  },
     methods: {
         resetInput() {
         this.name = "";
         this.mobile = "";
         this.postcode = "";
         this.email = "";
+        this.password = "";
+        this.confirmation = "";
       },
-      GetValidationMethod(value){
-
-        if(this.name && this.mobile && this.postcode && this.email){
-          console.log("Login function called")
-          } else {
+      GetValidationMethod(valid, label){
+        // que es valid? 
+        switch(label){
+          case 'Name':
+            if(valid === true) {
+              this.validName = true
+            } 
+            break;
+          case 'Mobile':
+            if(valid === true) {
+              this.validMobile = true
+            }
+            break; 
+          case 'Postcode':
+              if(valid === true) {
+            this.validPostcode = true
+            }
+          break; 
+          case 'Email':
+            if(valid === true) {
+              this.validEmail = true
+              }
+            break;
+            case 'Password':
+              if(valid === true) {
+                this.validPassword = true
+                }
+              break;
         }
-        console.log({ name: this.name, mobile: this.mobile, postcode: this.postcode, email: this.email });
-
       },
-      SubmitForm(e){        
-            // if(){
-            //   console.log('submitted')
-            //   this.submitted = true;
-            //   this.resetInput();
-            // } else {
-            //   this.submitted = false;
-            //   e.preventDefault;
-            //   alert('Form has errors')
-            // }
+      SubmitForm(e){   
+        this.GetValidationMethod();
+            if( this.validName && this.validMobile && this.validPostcode && this.validEmail && this.validPassword ){
+              console.log('submitted')
+              this.submitted = true;
+              this.resetInput();
+            } else {
+              this.submitted = false;
+              e.preventDefault;
+              alert('Form has errors')
+            }
       }
     }
 })

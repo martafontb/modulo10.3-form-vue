@@ -20,26 +20,39 @@
           <custom-input v-model="name" 
                         type="text"                    
                         @getvalidation="GetValidationMethod"
-                        placeholder="Your Name"
+                        placeholder="Your name"
                         label="Name"> </custom-input>
 
           <custom-input v-model="mobile" 
                         type="number"                    
                         @getvalidation="GetValidationMethod"
-                        placeholder="Your Mobile Number"
+                        placeholder="Your mobile number"
                         label="Mobile"> </custom-input>
 
           <custom-input v-model="postcode"
                         type="number"                    
                         @getvalidation="GetValidationMethod"
-                        placeholder="Your Postcode"
+                        placeholder="Your postcode"
                         label="Postcode"> </custom-input>
 
           <custom-input v-model="email" 
                         type="email"             
                         @getvalidation="GetValidationMethod"
-                        placeholder="Your Email"
+                        placeholder="Your email"
                         label="Email"> </custom-input>
+
+          <custom-input v-model="password" 
+                        type="password"            
+                        @getvalidation="GetValidationMethod"
+                        placeholder="Your password"
+                        label="Password"> </custom-input>
+          
+          <custom-input v-model="confirmation" 
+                        type="password"             
+                        @getvalidation="GetValidationMethod"
+                        placeholder="Repeat passowrd"
+                        label="Confirmation"> </custom-input>
+
           <div class="form-group mt-5"><a type="submit" @click="SubmitForm" class="btn btn-lg btn-success">Submit</a>  </div>
         </div>  
         <div v-else class="alert alert-success" role="alert">
@@ -54,13 +67,13 @@
   <div class="form-group">
     <label class="form-control-label">{{label}}</label>
       <input v-bind="$attrs" 
-             type="text" 
+             :type="type" 
              :value="value" 
              @blur="Validation($event.target.value)"
-             :class="{'form-control':true, 'is-invalid': errors && !value }" 
+             :class="{'form-control':true, 'is-invalid': errors}" 
              @input="$emit('update', $event.target.value)"/>   
     <div v-if="!value" class="invalid-feedback">Please enter something.</div>
-    <div v-if="errors" class="invalid-feedback">A valid {{ label }} is required</div> 
+    <div v-else="errors" class="invalid-feedback">A valid {{ label }} is required</div>
   </div>
 </template>
 

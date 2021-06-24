@@ -1,19 +1,10 @@
-const TYPES = [
-  'text', 
-  'password', 
-  'email', 
-  'number'
-]
-
-const includes = types => type => types.includes(type);
-
   Vue.component('custom-input', {
     template: '#custom-input', 
     inheritAttrs: false,
     data() {
       return {
         errors: false,
-        valid : false, 
+        valid: false
       };
     },
     props: {
@@ -27,15 +18,9 @@ const includes = types => type => types.includes(type);
       },
       type: {
         type: String,
-        default: 'text',
-        validator (value) {
-          const isValid = includes(TYPES)(value)
-          if (!isValid) {
-            console.warn(`allowed types are ${TYPES}`);
-          }
-          return isValid
-        }
-      },
+        default: '',
+      }
+      
     },
 
     model: {
@@ -43,7 +28,7 @@ const includes = types => type => types.includes(type);
         event: "update"
       },
     methods: {
-   //make it toggle class 'is-invalid'      
+  
         validName: function(name) {
           var re = /^[a-zA-Z]{6,13}$/;
           return re.test(name);
@@ -55,6 +40,10 @@ const includes = types => type => types.includes(type);
           var re = /(.+)@(.+){2,}\.(.+){2,}/;
           return re.test(email);
         },
+        validPassword: function(p) {
+          var re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,13}$/;
+          return re.test(p);
+        },
 
         Validation(value){
     
@@ -65,6 +54,7 @@ const includes = types => type => types.includes(type);
               } else {
                 console.log('wrong-name')
                 this.errors = true;
+                this.valid = false;
               }
           }
 
@@ -75,6 +65,7 @@ const includes = types => type => types.includes(type);
                   }else {
                     console.log('wrong-mobile')
                     this.errors = true;
+                    this.valid = false;
                   }
           }
 
@@ -85,6 +76,7 @@ const includes = types => type => types.includes(type);
                   }else {
                     console.log('wrong-postcode')
                     this.errors = true;
+                    this.valid = false;
                   }
           }
 
@@ -95,10 +87,22 @@ const includes = types => type => types.includes(type);
                   }else {
                     console.log('wrong-email')
                     this.errors = true;
+                    this.valid = false;
                   }
           }
 
-          this.$emit('getvalidation',value)
+          if( this.label === "Password" ){
+            if( this.validPassword(value)){
+              this.errors = false;
+              this.valid = true;
+                }else {
+                  console.log('wrong-password')
+                  this.errors = true;
+                  this.valid = false;
+                }
+        }
+
+          this.$emit('getvalidation', this.valid, this.label)
     },
     }
   })
